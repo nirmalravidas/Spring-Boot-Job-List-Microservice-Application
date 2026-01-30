@@ -1,5 +1,7 @@
 package com.nirmalravidas.job.service;
 
+import com.nirmalravidas.job.clients.CompanyClient;
+import com.nirmalravidas.job.clients.ReviewClient;
 import com.nirmalravidas.job.dto.JobDTO;
 import com.nirmalravidas.job.external.Company;
 import com.nirmalravidas.job.external.Review;
@@ -25,8 +27,13 @@ public class JobServiceImpl implements JobService{
     @Autowired
     RestTemplate restTemplate;
 
-    public JobServiceImpl(JobRepository jobRepository) {
+    private CompanyClient companyClient;
+    private ReviewClient reviewClient;
+
+    public JobServiceImpl(JobRepository jobRepository, CompanyClient companyClient, ReviewClient reviewClient) {
         this.jobRepository = jobRepository;
+        this.companyClient = companyClient;
+        this.reviewClient = reviewClient;
     }
 
     @Override
@@ -40,17 +47,8 @@ public class JobServiceImpl implements JobService{
 
     private JobDTO convertToDTO(Job job){
 
-        Company company = restTemplate.getForObject(
-                "http://COMPANY:8081/api/companies/" + job.getCompanyId(),
-                Company.class);
-
-        ResponseEntity<List<Review>> reviewResponse = restTemplate.exchange("http://REVIEW:8083/api/reviews?companyId=" + job.getCompanyId(),
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Review>>() {
-                });
-
-        List<Review> reviews = reviewResponse.getBody();
+        Company company = companyClient.getCompany(job.getCompanyId());
+        List<Review> reviews = reviewClient.getReviews(job.getCompanyId());
 
         JobDTO jobDTO = JobMapper.mapToJobWithCompanyDTO(job, company, reviews);
 

@@ -29,8 +29,99 @@ services:
       - postgres
     restart: unless-stopped
 
+  zipkin:
+    container_name: zipkin
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - postgres
+
+  gateway:
+    image: nirmalravidas/gateway:latest
+    container_name: gateway
+    ports:
+      - 8084:8084
+    depends_on:
+      - service-registry
+    networks:
+      - microservice-network
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  review:
+    image: nirmalravidas/review:latest
+    container_name: review
+    ports:
+      - 8083:8083
+    depends_on:
+      - service-registry
+      - config-server
+    networks:
+      - microservice-network
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+  
+  job:
+    image: nirmalravidas/job:latest
+    container_name: job
+    ports:
+      - 8082:8082
+    depends_on:
+      - service-registry
+      - config-server
+    networks:
+      - microservice-network
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka
+
+  company:
+    image: nirmalravidas/company:latest
+    container_name: company
+    ports:
+      - 8081:8081
+    depends_on:
+      - service-registry
+      - config-server
+    networks:
+      - microservice-network
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  service-registry:
+    image: nirmalravidas/service-registry:latest
+    container_name: service-registry
+    ports:
+      - 8761:8761
+    depends_on:
+      - zipkin
+      - postgres
+      - pgadmin
+    networks:
+      - microservice-network
+      - postgres
+
+  config-server:
+    image: nirmalravidas/config-server:latest
+    container_name: config-server
+    ports:
+      - 8080:8080
+    depends_on:
+      - service-registry
+    networks:
+      - microservice-network
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
 networks:
   postgres:
+  microservice-network:
 
 volumes:
   postgres:

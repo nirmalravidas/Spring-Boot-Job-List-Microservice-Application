@@ -7,6 +7,6 @@ spec:
   selector:
     app: company
   ports:
-    - port: 80
+    - port: 8081
       targetPort: 8081
-  type: LoadBalancer
+  type: ClusterIP

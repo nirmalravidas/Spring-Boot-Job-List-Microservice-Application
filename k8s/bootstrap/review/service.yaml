@@ -5,8 +5,8 @@ metadata:
   namespace: joblist
 spec:
   selector:
-    app: review 
+    app: review
   ports:
-    - protocol: TCP
-      port: 80
+    - port: 8083
       targetPort: 8083
+  type: ClusterIP

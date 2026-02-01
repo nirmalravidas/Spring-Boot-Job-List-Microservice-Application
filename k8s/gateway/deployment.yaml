@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: company
+  name: gateway
   namespace: joblist
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: company
+      app: gateway
   template:
     metadata:
       labels:
-        app: company
+        app: gateway
     spec:
       containers:
-        - name: company
-          image: nirmalravidas/company:latest
+        - name: gateway
+          image: nirmalravidas/gateway:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8081
+            - containerPort: 8084
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: k8s

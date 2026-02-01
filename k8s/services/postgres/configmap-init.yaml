@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init
+  namespace: joblist
+data:
+  init.sql: |
+    CREATE DATABASE company;
+    CREATE DATABASE job;
+    CREATE DATABASE review;

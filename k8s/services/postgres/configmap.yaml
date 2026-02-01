@@ -1,8 +1,8 @@
-apiVersion: v1 
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-config
+  namespace: joblist
 data:
-  POSTGRES_DB: postgres
-  POSTGRES_USER: postgres 
-  POSTGRES_PASSWORD: password 
+  POSTGRES_USER: user
+  POSTGRES_PASSWORD: password

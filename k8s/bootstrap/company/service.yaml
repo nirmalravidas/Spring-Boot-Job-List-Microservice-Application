@@ -1,13 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: zipkin
+  name: company
   namespace: joblist
 spec:
   selector:
-    app: zipkin
+    app: company
   ports:
-    - protocol: TCP
-      port: 9411
-      targetPort: 9411
+    - port: 80
+      targetPort: 8081
   type: LoadBalancer

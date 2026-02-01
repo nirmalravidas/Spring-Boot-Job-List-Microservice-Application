@@ -4,5 +4,5 @@ metadata:
   name: postgres-config
   namespace: joblist
 data:
-  POSTGRES_USER: user
+  POSTGRES_USER: postgres
   POSTGRES_PASSWORD: password

@@ -129,8 +129,15 @@ Tracing → Zipkin
 │   │   │   │   └── com
 │   │   │   │       └── nirmalravidas
 │   │   │   │           └── company
+│   │   │   │               ├── clients
+│   │   │   │               │   └── ReviewClient.java
 │   │   │   │               ├── controller
 │   │   │   │               │   └── CompanyController.java
+│   │   │   │               ├── dto
+│   │   │   │               │   └── ReviewMessage.java
+│   │   │   │               ├── messaging
+│   │   │   │               │   ├── RabbitMessageConsumer.java
+│   │   │   │               │   └── RabbitMQConfiguration.java
 │   │   │   │               ├── model
 │   │   │   │               │   └── Company.java
 │   │   │   │               ├── repository
@@ -280,7 +287,6 @@ Tracing → Zipkin
 │   └── namespace.yaml
 ├── pgadmin
 │   └── servers.json
-├── README.md
 ├── review
 │   ├── .mvn
 │   │   └── wrapper
@@ -293,6 +299,11 @@ Tracing → Zipkin
 │   │   │   │           └── review
 │   │   │   │               ├── controller
 │   │   │   │               │   └── ReviewController.java
+│   │   │   │               ├── dto
+│   │   │   │               │   └── ReviewMessage.java
+│   │   │   │               ├── messaging
+│   │   │   │               │   ├── RabbitMQConfiguration.java
+│   │   │   │               │   └── ReviewMessageProducer.java
 │   │   │   │               ├── model
 │   │   │   │               │   └── Review.java
 │   │   │   │               ├── repository
@@ -340,7 +351,9 @@ Tracing → Zipkin
 │   ├── mvnw
 │   ├── mvnw.cmd
 │   └── pom.xml
-└── docker-compose.yml
+├── docker-compose.yml
+├── image-1.png
+└── README.md
 
 ```
 

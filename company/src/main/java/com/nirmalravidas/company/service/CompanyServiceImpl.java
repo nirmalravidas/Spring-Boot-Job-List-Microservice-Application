@@ -1,7 +1,10 @@
 package com.nirmalravidas.company.service;
 
+import com.nirmalravidas.company.clients.ReviewClient;
+import com.nirmalravidas.company.dto.ReviewMessage;
 import com.nirmalravidas.company.model.Company;
 import com.nirmalravidas.company.repository.CompanyRepository;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +14,11 @@ import java.util.Optional;
 public class CompanyServiceImpl implements CompanyService{
 
     private final CompanyRepository companyRepository;
+    private final ReviewClient reviewClient;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, ReviewClient reviewClient) {
         this.companyRepository = companyRepository;
+        this.reviewClient = reviewClient;
     }
 
     @Override
@@ -40,17 +45,32 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public boolean deleteCompanyById(Long id){
-        if (companyRepository.existsById(id)){
-            companyRepository.deleteById(id);
-            return true;
-        } else {
+    public boolean deleteCompanyById(Long id) {
+        Company company = companyRepository.findById(id)
+                .orElseThrow();
+
+        if (company.isDeleted()) {
             return false;
         }
+
+        company.setDeleted(true);
+        companyRepository.save(company);
+
+        return true;
     }
 
     @Override
     public Company getCompanyById(Long id){
         return companyRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void updateCompanyRating(ReviewMessage reviewMessage) {
+        Company company = companyRepository.findById(reviewMessage.getCompanyId())
+                .orElseThrow(()-> new NotFoundException("Company Not found"+ reviewMessage.getCompanyId()));
+
+        double averageRating = reviewClient.getAverageRatingForCompany(reviewMessage.getCompanyId());
+        company.setRating(averageRating);
+        companyRepository.save(company);
     }
 }

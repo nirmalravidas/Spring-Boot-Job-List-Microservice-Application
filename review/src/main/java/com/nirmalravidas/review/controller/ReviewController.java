@@ -1,5 +1,6 @@
 package com.nirmalravidas.review.controller;
 
+import com.nirmalravidas.review.messaging.ReviewMessageProducer;
 import com.nirmalravidas.review.model.Review;
 import com.nirmalravidas.review.service.ReviewService;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,11 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final ReviewMessageProducer reviewMessageProducer;
 
-    public ReviewController(ReviewService reviewService) {
+    public ReviewController(ReviewService reviewService, ReviewMessageProducer reviewMessageProducer) {
         this.reviewService = reviewService;
+        this.reviewMessageProducer = reviewMessageProducer;
     }
 
     @GetMapping
@@ -26,8 +29,10 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<String> addReview(@RequestParam Long companyId, @RequestBody Review review){
         boolean isReviewSaved = reviewService.addReview(companyId, review);
-        if (isReviewSaved)
+        if (isReviewSaved) {
+            reviewMessageProducer.sendMessage(review);
             return new ResponseEntity<>("Review Added successfully", HttpStatus.OK);
+        }
         else
             return new ResponseEntity<>("Review Not saved", HttpStatus.NOT_FOUND);
     }
@@ -55,5 +60,11 @@ public class ReviewController {
         } else {
             return new ResponseEntity<>("Review not deleted", HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/averagerating")
+    public Double getAverageReview(@RequestParam Long companyId){
+        List<Review> reviewList = reviewService.getAllReviews(companyId);
+        return reviewList.stream().mapToDouble(Review::getRating).average().orElse(0.0);
     }
 }

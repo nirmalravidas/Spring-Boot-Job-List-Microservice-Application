@@ -27,8 +27,8 @@ public class JobServiceImpl implements JobService{
     @Autowired
     RestTemplate restTemplate;
 
-    private CompanyClient companyClient;
-    private ReviewClient reviewClient;
+    private final CompanyClient companyClient;
+    private final ReviewClient reviewClient;
 
     public JobServiceImpl(JobRepository jobRepository, CompanyClient companyClient, ReviewClient reviewClient) {
         this.jobRepository = jobRepository;
@@ -46,12 +46,9 @@ public class JobServiceImpl implements JobService{
     }
 
     private JobDTO convertToDTO(Job job){
-
         Company company = companyClient.getCompany(job.getCompanyId());
         List<Review> reviews = reviewClient.getReviews(job.getCompanyId());
-
         JobDTO jobDTO = JobMapper.mapToJobWithCompanyDTO(job, company, reviews);
-
         return jobDTO;
     }
 

@@ -119,6 +119,16 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - postgres
+      - microservice-network
+
 networks:
   postgres:
   microservice-network:

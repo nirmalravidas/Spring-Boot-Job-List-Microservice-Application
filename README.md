@@ -51,18 +51,41 @@ Tracing → Zipkin
 
 ## Tech Stack
 
-- **Java 21**
-- **Spring Boot**
-- **Spring Cloud**
-  - Gateway
-  - Eureka Discovery Client
-  - Config Server
-- **Spring Data JPA**
-- **PostgreSQL**
-- **PGADMIN**
-- **Docker & Docker Compose**
-- **Kubernetes (K8s)**
-- **Zipkin (Distributed Tracing)**
+### Backend
+- Java 21
+- Spring Boot
+- Spring Data JPA
+- Spring Cloud (Gateway, Eureka, Config)
+- OpenFeign
+
+### Messaging
+- RabbitMQ
+
+### Database
+- PostgreSQL (Database per service)
+
+### DevOps & Cloud
+- Docker & Docker Compose
+- Kubernetes (manifests included)
+- Zipkin (Distributed Tracing)
+
+### Tools
+- pgAdmin
+- Postman
+
+---
+
+## Communication Patterns
+
+### Synchronous Communication
+- **OpenFeign** for service-to-service REST calls
+- Example: Company Service fetching average rating from Review Service
+
+### Asynchronous Communication
+
+- **RabbitMQ** (Event-Driven Architecture)
+- Review Service publishes events
+- Company Service consumes events to update ratings
 
 ---
 
@@ -79,6 +102,20 @@ Tracing → Zipkin
 
 ---
 
+## Dockerized Services
+
+#### All services are fully containerized:
+
+- Job Service
+- Company Service
+- Review Service
+- Gateway
+- Eureka Server
+- Config Server
+- RabbitMQ
+- PostgreSQL
+- Zipki
+---
 ## Project Structure
 
 ```
@@ -408,6 +445,40 @@ Check status:
 ```bash
 kubectl get pods
 kubectl get services
+```
+
+---
+
+## Sample JSON (Postman)
+
+#### Create Company
+```json
+
+{
+  "name": "Test Company",
+  "description": "Test Company Description"
+}
+
+```
+
+#### Create Job
+```json
+{
+    "title": "Test Job",
+    "description": "Test Job Description",
+    "minSalary": "30000",
+    "maxSalary": "1000000",
+    "location": "Test Job Location",
+    "companyId": 3
+}
+```
+#### Create Review
+```json
+{
+    "title": "Test Review",
+    "description": "Test Description",
+    "rating" : 5.3
+}
 ```
 
 ---

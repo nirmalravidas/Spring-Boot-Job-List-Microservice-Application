@@ -1,23 +1,11 @@
-package com.nirmalravidas.review.model;
+package com.nirmalravidas.review.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "REVIEW")
-public class Review {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ReviewMessage {
     private Long id;
     private String title;
     private String description;
     private Double rating;
     private Long companyId;
-
-    public Review(){
-
-    }
 
     public Long getId() {
         return id;
@@ -43,14 +31,6 @@ public class Review {
         this.description = description;
     }
 
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
     public Long getCompanyId() {
         return companyId;
     }
@@ -59,4 +39,11 @@ public class Review {
         this.companyId = companyId;
     }
 
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
 }

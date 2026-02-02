@@ -1,5 +1,6 @@
 package com.nirmalravidas.company.service;
 
+import com.nirmalravidas.company.dto.ReviewMessage;
 import com.nirmalravidas.company.model.Company;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface CompanyService {
     void createCompany(Company company);
     boolean deleteCompanyById(Long id);
     Company getCompanyById(Long id);
+    void updateCompanyRating(ReviewMessage reviewMessage);
 }

@@ -11,6 +11,10 @@ public class Company {
     private Long id;
     private String name;
     private String description;
+    private Double rating;
+
+    @Column(name = "is_deleted")
+    private boolean deleted = false;
 
     public Company(){
 
@@ -38,5 +42,21 @@ public class Company {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 }
